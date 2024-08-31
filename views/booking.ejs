@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Booking Confirmation</title>
+  <link rel="stylesheet" href="/public/styles.css">
+</head>
+<body>
+  <header>
+    <h1>Booking Confirmation</h1>
+    <nav>
+      <a href="/">Home</a> |
+      <a href="/rooms">Rooms</a>
+    </nav>
+  </header>
+  <main>
+    <h2>Booking Details</h2>
+    <p>Room Number: <%= booking.room_number %></p>
+    <p>Type: <%= booking.type %></p>
+    <p>Price: <%= booking.price %></p>
+    <p>Status: <%= booking.status %></p>
+    <p>Thank you for booking with us!</p>
+  </main>
+  <footer>
+    <p>&copy; 2024 Hotel Management System</p>
+  </footer>
+</body>
+</html>

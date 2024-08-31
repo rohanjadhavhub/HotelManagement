@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Available Rooms</title>
+  <link rel="stylesheet" href="/public/styles.css">
+</head>
+<body>
+  <header>
+    <h1>Available Rooms</h1>
+    <nav>
+      <a href="/">Home</a> |
+      <a href="/rooms">Rooms</a>
+    </nav>
+  </header>
+  <main>
+    <h2>Rooms List</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Room Number</th>
+          <th>Type</th>
+          <th>Price</th>
+          <th>Status</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% rooms.forEach(room) => { %>
+          <tr>
+            <td><%= room.room_number %></td>
+            <td><%= room.type %></td>
+            <td><%= room.price %></td>
+            <td><%= room.status %></td>
+            <td>
+              <% if (room.status === 'available') { %>
+                <form action="/book" method="POST">
+                  <input type="hidden" name="room_id" value="<%= room.id %>">
+                  <button type="submit">Book</button>
+                </form>
+              <% } else { %>
+                <button disabled>Booked</button>
+              <% } %>
+            </td>
+          </tr>
+        <% }) %>
+      </tbody>
+    </table>
+  </main>
+  <footer>
+    <p>&copy; 2024 Hotel Management System</p>
+  </footer>
+</body>
+</html>
