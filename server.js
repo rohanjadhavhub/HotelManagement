@@ -1,11 +1,11 @@
 const express = require('express');
 const session = require('express-session');
 const path = require('path');
-const sequelize = require('./models');
+const { sequelize } = require('./models'); // Destructure to get the sequelize instance
 require('dotenv').config();
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = 3000;
 
 // Middleware
 app.use(express.urlencoded({ extended: true }));
@@ -17,7 +17,7 @@ app.set('view engine', 'ejs');
 app.use(session({
   secret: process.env.SECRET_KEY,
   resave: false,
-  saveUninitialized: true,
+  saveUninitialized: false,
 }));
 
 // Routes
@@ -25,7 +25,7 @@ app.use('/', require('./routes/index'));
 app.use('/auth', require('./routes/auth'));
 
 // Sync Sequelize Models and Start Server
-sequelize.sync().then(() => {
+sequelize.sync().then(() => { // Use the correct sequelize instance
   app.listen(PORT, () => {
     console.log(`Server running on http://localhost:${PORT}`);
   });

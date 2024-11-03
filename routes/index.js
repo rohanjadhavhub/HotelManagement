@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const { Room, Booking } = require('../models');
-const { isAuthenticated } = require('../middleware/auth');
+const { Room, Booking, User} = require('../models');
+const { isAuthenticated } = require('../middlewares/auth');
 
 // Middleware to check if user is authenticated
 router.use((req, res, next) => {
@@ -9,7 +9,9 @@ router.use((req, res, next) => {
   res.locals.role = req.session.role;
   next();
 });
-
+router.get('/', (req, res) => {   
+  res.render('index');
+});
 // Route to display available rooms
 router.get('/rooms', async (req, res) => {
   try {
@@ -21,8 +23,18 @@ router.get('/rooms', async (req, res) => {
   }
 });
 
+
+router.get('/bookings', isAuthenticated, async (req, res) => {    
+  try {
+    const bookings = await Booking.findAll();
+    res.render('bookings', { bookings });
+  } catch (err) {
+    console.error('Error fetching bookings:', err);
+    res.status(500).send('Internal Server Error');
+  }
+});
 // Route to handle room booking
-router.post('/book', isAuthenticated, async (req, res) => {
+router.post('/bookings', isAuthenticated, async (req, res) => {
   const roomId = req.body.room_id;
 
   try {

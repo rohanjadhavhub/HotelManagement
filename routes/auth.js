@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcryptjs');
-const User = require('../models/User');
+const { User } = require('../models');
 const session = require('express-session');
 
 // Route for user registration
@@ -10,18 +10,19 @@ router.get('/register', (req, res) => {
 });
 
 router.post('/register', async (req, res) => {
-  const { username, email, password, role } = req.body;
+  const { name, username, email, password, role } = req.body;
   try {
     const hashedPassword = await bcrypt.hash(password, 10);
 
     await User.create({
+      name,
       username,
       email,
       password: hashedPassword,
       role
     });
 
-    res.redirect('/login');
+    res.redirect('/auth/login');
   } catch (err) {
     console.error('Error registering user:', err);
     res.status(500).send('Internal Server Error');
